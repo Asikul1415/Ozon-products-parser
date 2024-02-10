@@ -7,7 +7,6 @@ How to work with this parser:
 Here is example of code you need to parse 1 page to json file
 
 ```html
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 from Parser import OzonParser
 
 parser = OzonParser(url = "https://www.ozon.ru/category/telefony-i-smart-chasy-15501/")
