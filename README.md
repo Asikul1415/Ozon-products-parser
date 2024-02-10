@@ -35,3 +35,11 @@ In the convertToJsonFile method, change the file_path argument to the one you ne
 If you want to change the file name
 ------------------------
 Change the file_name argument in the convertToJsonFile method (must contain .json at the end)
+
+P.S
+-----------------
+### Why not scrapy?
+Because <https://www.ozon.ru> have anti-DDOS system, which turns the spider to hell and lets it parse the Cloudflare checking page
+
+### Why this parser throw exceptions to None objects?
+More likely because frontenders from <https://www.ozon.ru> decided to change the names of a bunch of tags, which parser needs to parse.
