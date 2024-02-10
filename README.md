@@ -43,3 +43,6 @@ Because <https://www.ozon.ru> have anti-DDOS system, which turns the spider to h
 
 ### Why this parser throw exceptions to None objects?
 More likely because frontenders from <https://www.ozon.ru> decided to change the names of a bunch of tags, which parser needs to parse.
+
+### Why parser so slow?
+This is because I use undected_chromedriver in this parser, a modified selenium to bypass anti-DDoS systems. Theoretically, you can do this faster by reducing the wait time between page parses, but most likely you will not have all the product characteristics or not all the products in the final file. You can try it yourself. Maybe your computer would load pages much faster than mine.
