@@ -1,7 +1,7 @@
 # Ozon-products-parser
 A parser that parses products and their characteristics from the catalog you need on the website https://www.ozon.ru. Output to JSON file.
 
-h1 How to work with this parser:
+How to work with this parser:
 ================================
 
 Here is example of code you need to parse 1 page to json file
@@ -21,18 +21,18 @@ As final result we would have a json file which would like this:
 
 ![image](https://github.com/Asikul1415/Ozon-products-parser/assets/83174848/67664e03-cd05-4557-badf-0b6d41655dd5)
 
-h2 If you need to apply filters to search for specific products
+If you need to apply filters to search for specific products
 ----------------------
 Go to https://www.ozon.ru. Then apply the filters you need and paste the full link into your code.
 
-h2 If you want to change the number of pages being parsed
+If you want to change the number of pages being parsed
 -----------------------
 Change the page_count argument in the parse method to the value you need
 
-h2 If you want to specify the path
+If you want to specify the path
 ------------------------
 In the convertToJsonFile method, change the file_path argument to the one you need.
 
-h2 If you want to change the file name
+If you want to change the file name
 ------------------------
 Change the file_name argument in the convertToJsonFile method (must contain .json at the end)
