@@ -10,13 +10,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
 import json
-import re
 import psutil
 
 
 class OzonParser() : 
     __pages = []
-    __links_to_products = []
     __products = []
     __path_to_directory = os.path.abspath(__file__).replace(os.path.basename(__file__),'')
     
