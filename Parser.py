@@ -15,13 +15,13 @@ import psutil
 
 
 class OzonParser() : 
-    pages = []
-    links_to_products = []
-    products = []
-    path_to_directory = os.path.abspath(__file__).replace(os.path.basename(__file__),'')
+    __pages = []
+    __links_to_products = []
+    __products = []
+    __path_to_directory = os.path.abspath(__file__).replace(os.path.basename(__file__),'')
     
 
-    def parse_pages(self,begining_page,pages_count):
+    def __parse_pages(self,begining_page,pages_count):
         i = begining_page 
         temp = i
         url = self.url
@@ -39,7 +39,7 @@ class OzonParser() :
 
             html_code = bs(self.driver.page_source,'lxml')
             
-            self.pages.append(html_code)
+            self.__pages.append(html_code)
             
             i += 1
             
@@ -52,9 +52,9 @@ class OzonParser() :
 
 
         
-    def parse_links_to_products(self):
+    def __parse_links_to_products(self):
         os.system('cls')
-        for page in self.pages:
+        for page in self.__pages:
             divs = page.find_all('div', {'class' : 'xi1'})
             if(divs == []): 
                 divs = page.find_all('div', {'class' : 'wi7'})
@@ -62,11 +62,11 @@ class OzonParser() :
             for div in divs:
                 a = div.find('a', {'class' : 'tile-hover-target it3 ti3'})
                 href = a['href']
-                self.parse_product(href.split('?')[0])
+                self.__parse_product(href.split('?')[0])
 
 
 
-    def parse_product(self,href):
+    def __parse_product(self,href):
         url = 'https://www.ozon.ru' + href
         product = {}
         
@@ -95,19 +95,19 @@ class OzonParser() :
         if(html_code.find('h2', {'class' : 'zk4'}) != None): 
             return 
                
-        price_temp = self.parse_price(html_code= html_code)
+        price_temp = self.__parse_price(html_code= html_code)
 
-        product['Название'] = self.parse_name(html_code= html_code)
+        product['Название'] = self.__parse_name(html_code= html_code)
         product['Цена со скидкой'] = price_temp[0] #price_with_discount
         product['Цена без скидки'] = price_temp[1] #price_without_discount
-        product['Рейтинг'] = self.parse_rating(html_code= html_code)
+        product['Рейтинг'] = self.__parse_rating(html_code= html_code)
         product['Ссылка'] = url
-        self.parse_charasterics(html_code=html_code, product=product)
+        self.__parse_charasterics(html_code=html_code, product=product)
 
         
-        self.products.append(product)
+        self.__products.append(product)
 
-    def parse_price(self,html_code : str):
+    def __parse_price(self,html_code : str):
         price_temp = html_code.find('span', {'class' : 'l6p pl6 ql'})
         if(price_temp is None): 
             price_temp = html_code.find('span', {'class' : 'pl1 pl'})
@@ -124,7 +124,7 @@ class OzonParser() :
 
         return tuple[price_with_discount,price_without_discount]
     
-    def parse_rating(self,html_code: str):
+    def __parse_rating(self,html_code: str):
         rating_temp = html_code.find('div', {'class' : 'rv9'})
 
         if(rating_temp is None): 
@@ -134,7 +134,7 @@ class OzonParser() :
 
         return rating_temp
 
-    def parse_name(self, html_code: str):   
+    def __parse_name(self, html_code: str):   
         temp = html_code.find('h1', {'class' : 'lq1'})
         name_of_product = ''
 
@@ -145,7 +145,7 @@ class OzonParser() :
         
         return name_of_product
 
-    def parse_charasterics(self,html_code: str,product):
+    def __parse_charasterics(self,html_code: str,product):
         name_of_characteristics = html_code.find_all('dt', {'class' : 'j5v'})
         characteristics = html_code.find_all('dd', {'class' : 'vj5'})
         
@@ -166,7 +166,7 @@ class OzonParser() :
 
     
 
-    def exit(self):
+    def __exit(self):
         time.sleep(2)
         self.driver.quit()
         self.driver.service.stop()
@@ -174,16 +174,16 @@ class OzonParser() :
 
 
     def parse(self,pages_count,begining_page=1):
-        self.parse_pages(begining_page,pages_count)
-        self.parse_links_to_products()
-        self.exit()
-        print('Было спарсено: '  + str(len(self.products)))
-        return self.products
+        self.__parse_pages(begining_page,pages_count)
+        self.__parse_links_to_products()
+        self.__exit()
+        print('Было спарсено: '  + str(len(self.__products)))
+        return self.__products
     
 
 
     def printProduct(self,index):
-        product = self.products[index]
+        product = self.__products[index]
         keys = product.keys()
         for key in keys:
             print(key + ': ' + product[key])
@@ -191,11 +191,11 @@ class OzonParser() :
 
 
     def convertToJsonFile(self,file_name='products.json',path=''):
-        if(path == ''): path = self.path_to_directory + file_name
+        if(path == ''): path = self.__path_to_directory + file_name
         elif(path != ''): path = path + file_name
 
         with open(path,'w',encoding='utf-8') as json_file:
-            json.dump(self.products, json_file,indent = 2, ensure_ascii= False)
+            json.dump(self.__products, json_file,indent = 2, ensure_ascii= False)
 
 
     
