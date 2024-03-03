@@ -142,13 +142,6 @@ class OzonParser() :
                 product[f'{name_of_characteristic}'] = f'{characteristics[i].text}'          
 
         self.products.append(product)
-
-    def close_windows(self):
-        current_window = self.driver.current_window_handle
-        for handle in self.driver.window_handles:
-            self.driver.switch_to(handle)
-            if(handle != current_window):
-                self.driver.close()
     
     def exit(self):
         time.sleep(2)
