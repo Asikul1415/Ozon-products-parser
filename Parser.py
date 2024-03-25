@@ -42,7 +42,7 @@ class OzonParser() :
             i += 1
             
             #Checking if next page exist
-            url_temp = html_code.find('a', {'class' : 'p6e b237-a0 b237-b6 b237-b1'}) 
+            url_temp = html_code.find('a', {'class' : 'e7p b239-a0 b239-b6 b239-b1'}) 
             if(url_temp != None): 
                 url = 'https://www.ozon.ru' + url_temp['href']
             else: 
@@ -53,12 +53,12 @@ class OzonParser() :
     def __parse_links_to_products(self):
         os.system('cls')
         for page in self.__pages:
-            divs = page.find_all('div', {'class' : 'xi1'})
+            divs = page.find_all('div', {'class' : 'i3w'})
             if(divs == []): 
-                divs = page.find_all('div', {'class' : 'wi7'})
+                divs = page.find_all('div', {'class' : 'wi'})
 
             for div in divs:
-                a = div.find('a', {'class' : 'tile-hover-target it3 ti3'})
+                a = div.find('a', {'class' : 'tile-hover-target ai8 ia8'})
                 href = a['href']
                 self.__parse_product(href.split('?')[0])
 
@@ -90,7 +90,7 @@ class OzonParser() :
         html_code = bs(self.driver.page_source,'lxml')
         
         #Checking if the product is not out of stock
-        if(html_code.find('h2', {'class' : 'zk4'}) != None): 
+        if(html_code.find('h2', {'class' : 'ky6'}) != None): 
             return 
                
         price_temp = self.__parse_price(html_code= html_code)
@@ -105,25 +105,25 @@ class OzonParser() :
         
         self.__products.append(product)
 
-    def __parse_price(self,html_code : str):
-        price_temp = html_code.find('span', {'class' : 'l6p pl6 ql'})
+    def __parse_price(self,html_code : bs) -> tuple[str,str]:
+        price_temp = html_code.find('span', {'class' : 'lo9 l9o pl2'})
         if(price_temp is None): 
-            price_temp = html_code.find('span', {'class' : 'pl1 pl'})
+            price_temp = html_code.find('span', {'class' : 'l4o ol2'})
         if(price_temp is None): 
-            price_temp = html_code.find( 'span' ,{'class': 'l6p pl6 l0q'})
-        price_with_discount = price_temp.text
+            price_temp = html_code.find( 'span' ,{'class': 'lo9 l9o lp3'}) 
+        price_with_discount = price_temp.text 
     
 
-        price_temp = html_code.find('span', {'class' : 'p5l p6l p4l lp6'})
+        price_temp = html_code.find('span', {'class' : 'ol8 ol9 ol7 o8l'})
 
         if(price_temp is not None): 
             price_without_discount = price_temp.text
         else: price_without_discount = 'Нет'
 
-        return tuple[price_with_discount,price_without_discount]
+        return (price_with_discount,price_without_discount)
     
-    def __parse_rating(self,html_code: str):
-        rating_temp = html_code.find('div', {'class' : 'rv9'})
+    def __parse_rating(self,html_code: bs):
+        rating_temp = html_code.find('div', {'class' : 'rw7'})
 
         if(rating_temp is None): 
             rating_temp = 'Нет' 
@@ -132,20 +132,23 @@ class OzonParser() :
 
         return rating_temp
 
-    def __parse_name(self, html_code: str):   
-        temp = html_code.find('h1', {'class' : 'lq1'})
+    def __parse_name(self, html_code: bs):   
+        temp = html_code.find('h1', {'class' : 'p3l'})
         name_of_product = ''
 
+        if (temp == None):
+            temp = html_code.find('div',{'class' : 'pl5 p5l'})
+        if(temp == None):
+            name_of_product = 'Не найдено'
+    
         if(temp != None): 
             name_of_product = temp.text
-        else: 
-            name_of_product = 'Не найдено'
         
         return name_of_product
 
-    def __parse_charasterics(self,html_code: str,product):
-        name_of_characteristics = html_code.find_all('dt', {'class' : 'j5v'})
-        characteristics = html_code.find_all('dd', {'class' : 'vj5'})
+    def __parse_charasterics(self,html_code: bs,product):
+        name_of_characteristics = html_code.find_all('dt', {'class' : 'u6j'})
+        characteristics = html_code.find_all('dd', {'class' : 'ju7'})
         
 
         for i in range(len(characteristics)):
@@ -201,3 +204,4 @@ class OzonParser() :
         self.url = url
         self.driver_path = driver_path
         self.driver = uc.Chrome(driver_executable_path=self.driver_path)
+
