@@ -46,3 +46,11 @@ More likely because frontenders from <https://www.ozon.ru> decided to change the
 
 ### Why parser so slow?
 This is because I use undected_chromedriver in this parser, a modified selenium to bypass anti-DDoS systems. Theoretically, you can do this faster by reducing the wait time between page parses, but most likely you will not have all the product characteristics or not all the products in the final file. You can try change wait time yourself. Maybe your computer would load pages much faster than mine.
+
+### HTTP 404 Not Found
+Check if you have the latest version of undetected_chromedriver installed
+You can do this by writing this command in the terminal:
+
+```html
+pip install undetected_chromedriver --upgrade
+```
