@@ -15,12 +15,12 @@ class OzonParser() :
     __links_to_products = []
     __path_to_directory = os.path.abspath(__file__).replace(os.path.basename(__file__),'')
     
+    
 
     def __init__(self,url: str,driver_path: str = None):
         self.url = url
         self.driver_path = driver_path
         self.driver = uc.Chrome(driver_executable_path=self.driver_path)
-
 
 
     def __parse_pages(self,begining_page,pages_count):
@@ -89,16 +89,16 @@ class OzonParser() :
                 self.driver.quit()
                 self.driver = uc.Chrome(driver_executable_path=self.driver_path)
                 self.driver.get(url = url)
-                time.sleep(3)
-            
+                time.sleep(4)
 
             scroll_position = 0
-
+            
             # Прокручиваем страницу до последнего элемента
-            for i in range(4):
-                scroll_position += 500
-                self.driver.execute_script(f"window.scrollTo(0, {scroll_position});")
-                time.sleep(1)
+            # for i in range(3):
+            #     scroll_position += 700
+            #     self.driver.execute_script(f"window.scrollTo(0, {scroll_position});")
+            #     time.sleep(1)
+            time.sleep(4.45)
             
             try:    
                 price_temp = self.__parse_price()
@@ -114,7 +114,7 @@ class OzonParser() :
             except NoSuchElementException:
                 print("\n\nТовар кончился\n\n")
                 return
-
+            
 
     def __parse_price(self) -> tuple[str,str]:
         prices = []
@@ -143,7 +143,9 @@ class OzonParser() :
         columns = self.driver.find_elements(By.CSS_SELECTOR,"div[data-widget='column']")
         for column in columns:
             if( '/ 5' in column.text ):
-                return column.text.split('\n')[0]
+                rating = column.text.split('\n')[0]
+                return rating
+
 
     def __parse_name(self):   
         name_temp = self.driver.find_element(By.CSS_SELECTOR,"div[data-widget='webProductHeading']")
@@ -166,7 +168,7 @@ class OzonParser() :
     def __exit(self):
         time.sleep(2)
         self.driver.quit()
-        self.driver.service.stop()
+        self.driver.service.stop()  
 
 
     def parse(self,pages_count,begining_page=1):
